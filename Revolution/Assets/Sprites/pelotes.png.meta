@@ -1,12 +1,12 @@
 fileFormatVersion: 2
 guid: 7a8a285a7979f4a91b8f64c39f957b2a
-timeCreated: 1487362230
+timeCreated: 1487365603
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: pelotes_0
-    21300002: pelotes_1
-    21300004: pelotes_2
+    21300000: pelotes_1
+    21300002: pelotes_2
+    21300004: pelotes_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -56,28 +56,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pelotes_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 52
-        width: 387
-        height: 796
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
       name: pelotes_1
       rect:
         serializedVersion: 2
-        x: 425
-        y: 63
-        width: 378
-        height: 745
+        x: 80
+        y: 606
+        width: 885
+        height: 413
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -85,12 +72,25 @@ TextureImporter:
       name: pelotes_2
       rect:
         serializedVersion: 2
-        x: 877
-        y: 53
-        width: 323
-        height: 788
+        x: 1133
+        y: 114
+        width: 776
+        height: 641
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pelotes_0
+      rect:
+        serializedVersion: 2
+        x: 2103
+        y: 284
+        width: 807
+        height: 606
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
