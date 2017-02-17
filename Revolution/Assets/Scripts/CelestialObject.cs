@@ -7,8 +7,8 @@ using System.Linq;
 public class CelestialObject : MonoBehaviour
 {
 
-    private bool isFixed = true;
-    private Rigidbody2D m_Body;
+    protected bool isFixed = true;
+    protected Rigidbody2D m_Body;
 
     // Use this for initialization
 	void Start () {
@@ -19,7 +19,6 @@ public class CelestialObject : MonoBehaviour
 
 	}
 
-
     void OnCollisionEnter2D(Collision2D coll) {
         // Check if owner is black hole
         if (tag == "black_hole")
@@ -29,6 +28,7 @@ public class CelestialObject : MonoBehaviour
                 Destroy(coll.gameObject);
             }
         }
+
     }
 
 
@@ -72,23 +72,33 @@ public class CelestialObject : MonoBehaviour
         return m_Body != null ? m_Body.position : new Vector2(0, 0);
     }
 
-    public void AddForceCelestial(List<GameObject> list_Objects)
+    public virtual void AddForceCelestial(List<GameObject> list_Objects)
     {
-        if (m_Body == null || list_Objects == null) return;
+        if (m_Body == null || list_Objects == null || isFixed) return;
 
+        var forceSum = GetSumForceInteraction(this, list_Objects);
+
+        m_Body.AddForce(forceSum);
+    }
+
+    protected static Vector2 GetSumForceInteraction(CelestialObject reference, List<GameObject> list_Objects)
+    {
+        var forceSum = new Vector2(0,0);
         foreach (var go in list_Objects)
         {
             if (go == null) continue;
 
             var cel = go.GetComponent<CelestialObject>();
-            if (cel != this && !isFixed)
+            if (cel != reference)
             {
-                m_Body.AddForce(GetForceInteraction(this, cel));
+                forceSum += GetForceInteraction(reference, cel);
             }
         }
+
+        return forceSum;
     }
 
-    private static Vector2 GetForceInteraction(CelestialObject obj1, CelestialObject obj2)
+    protected static Vector2 GetForceInteraction(CelestialObject obj1, CelestialObject obj2)
     {
         var r = obj2.GetPosition() - obj1.GetPosition();
         var m1 = (float)obj1.GetMass();
