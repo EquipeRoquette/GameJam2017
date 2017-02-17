@@ -4,7 +4,6 @@ using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 
 public class arrowControl : MonoBehaviour {
-	public ReleaseGameManager rGM;
 	public Vector2 mouseDiff;
 	public float arrowAngle = 0F;
 	public float distance = 0F;
@@ -136,8 +135,13 @@ public class arrowControl : MonoBehaviour {
    }
 
 	// Use this for initialization
+
+    private GameManager rGM;
+
 	void Start () {
      // targetAngle = this.transform.rotation;
+
+	    rGM = FindObjectOfType<GameManager>();
 	}
 
    void FixedUpdate() {
@@ -151,7 +155,9 @@ public class arrowControl : MonoBehaviour {
    }
 	
 	// Update is called once per frame
+
 	void Update () {		 /*
+
 		mouseDiff = getMouseDiff();
 
 		setArrowAngle (mouseDiff);
@@ -161,10 +167,12 @@ public class arrowControl : MonoBehaviour {
 		this.transform.localScale = getArrowScale (distance);
 
 		//arrow.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
-		if (Input.GetMouseButtonDown (0)) {
+		if (rGM!= null && Input.GetMouseButtonDown (0)) {
 			Debug.Log ("Pressed left click.");
+
 			rGM.launchSatellite (this.transform.position, getMouseDiff().normalized * getPower () * forceFactor);
 		} */
+
 
 	}
 

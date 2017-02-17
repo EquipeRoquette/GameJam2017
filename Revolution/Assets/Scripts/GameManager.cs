@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject prefabBlackHole;
     public GameObject prefabSatellite;
 
-    private readonly List<GameObject> celestialObjects = new List<GameObject>();
+    private readonly List<CelestialObject> celestialObjects = new List<CelestialObject>();
 
     // Use this for initialization
 	void Start () {
@@ -16,16 +17,15 @@ public class GameManager : MonoBehaviour
 
 	// Update is called once per frame
 	void Update () {
+
 	    // Update forces
 	    foreach (var go in celestialObjects)
 	    {
 	        if (go == null) continue;
 
 	        var cel = go.GetComponent<CelestialObject>();
-	        if (cel != null && !cel.GetIsFixed())
-	        {
-	            cel.AddForceCelestial(celestialObjects);
-	        }
+	        cel.AddForceCelestial(celestialObjects);
+
 	    }
 
 	}
@@ -39,15 +39,20 @@ public class GameManager : MonoBehaviour
     private IEnumerator InitPlaying()
     {
 
-        celestialObjects.Add((GameObject) Instantiate(prefabSatellite, new Vector3(-1.5f, 1, 0), Quaternion.identity));
-        celestialObjects.Add((GameObject) Instantiate(prefabSatellite, new Vector3(1.5f, 1, 0), Quaternion.identity));
-//        celestialObjects.Add((GameObject) Instantiate(prefabBlackHole, new Vector3(8, 0, 0), Quaternion.identity));
-//        celestialObjects.Add((GameObject) Instantiate(prefabBlackHole, new Vector3(-8, 0, 0), Quaternion.identity));
+        // Look for all element on scene
+        var objectsScene = FindObjectsOfType<CelestialObject>();
 
-        celestialObjects[0].GetComponent<CelestialObject>().Init(false, new Vector2(-0.2f, 3));
-        celestialObjects[1].GetComponent<CelestialObject>().Init(false, new Vector2(3.2f, 0));
-//        celestialObjects[2].GetComponent<CelestialObject>().Init(true, new Vector2(0, 0));
-//        celestialObjects[3].GetComponent<CelestialObject>().Init(true, new Vector2(0, 0));
+        foreach (var obj in objectsScene)
+        {
+            celestialObjects.Add(obj);
+        }
+
+
+//        var sat = (GameObject) Instantiate(prefabSatellite, new Vector3(0, 4, 0), Quaternion.identity);
+//        celestialObjects.Add(sat.GetComponent<CelestialObject>());
+//        celestialObjects[celestialObjects.Count-1].Init(false, new Vector2(-5, -3));
+
+        Debug.Log("Object Scene" + celestialObjects.Count());
 
         yield return null;
     }
@@ -60,5 +65,13 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
+
+    public void launchSatellite(Vector3 position, Vector2 speed){
+
+        var sat = (GameObject) Instantiate(prefabSatellite, position, Quaternion.identity);
+        celestialObjects.Add(sat.GetComponent<CelestialObject>());
+        celestialObjects[celestialObjects.Count-1].Init(false, speed);
+    }
+
 
 }
