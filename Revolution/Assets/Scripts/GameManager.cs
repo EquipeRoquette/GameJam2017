@@ -18,6 +18,23 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 
+	    var objectsScene = FindObjectsOfType<DebrisBelt>();
+	    if (objectsScene != null)
+	    {
+	        foreach (var obj in objectsScene)
+	        {
+	            var ob = obj.getDebris();
+	            if (ob ==null) continue;
+
+	            foreach (var cel in ob)
+	            {
+	                celestialObjects.Add(cel.GetComponent<CelestialObject>());
+	            }
+	        }
+	    }
+
+
+
 	    // Update forces
 	    foreach (var go in celestialObjects)
 	    {
@@ -46,11 +63,6 @@ public class GameManager : MonoBehaviour
         {
             celestialObjects.Add(obj);
         }
-
-
-//        var sat = (GameObject) Instantiate(prefabSatellite, new Vector3(0, 4, 0), Quaternion.identity);
-//        celestialObjects.Add(sat.GetComponent<CelestialObject>());
-//        celestialObjects[celestialObjects.Count-1].Init(false, new Vector2(-5, -3));
 
         Debug.Log("Object Scene" + celestialObjects.Count());
 

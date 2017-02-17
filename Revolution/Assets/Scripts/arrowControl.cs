@@ -27,7 +27,7 @@ public class arrowControl : MonoBehaviour {
 		//arrow.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
 		if (rGM!= null && Input.GetMouseButtonDown (0)) {
 			Debug.Log ("Pressed left click.");
-			rGM.launchSatellite(this.transform.position, getMouseDiff().normalized * getPower () * forceFactor);
+			rGM.launchSatellite(this.transform.position, getMouseDiff().normalized * 2 * getPower () * forceFactor);
 		}
 
 	}
@@ -35,7 +35,7 @@ public class arrowControl : MonoBehaviour {
 	Vector2 getMouseDiff() {		
 		Vector3 v3Pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z);
 		v3Pos = Camera.main.ScreenToWorldPoint(v3Pos);
-		v3Pos = v3Pos - this.transform.position;
+		v3Pos = (v3Pos - this.transform.position);
 		return new Vector2(v3Pos.x, v3Pos.y);
 	}
 

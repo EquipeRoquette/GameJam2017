@@ -24,7 +24,10 @@ public class CelestialObject : MonoBehaviour
 	}
 	
 	void Update () {
-
+	    if (tag == "black_hole")
+	    {
+	        transform.Rotate(Vector3.forward, 45 * Time.deltaTime * 0.2f);
+	    }
 	}
 
 

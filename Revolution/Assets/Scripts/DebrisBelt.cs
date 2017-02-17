@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 public class DebrisBelt : MonoBehaviour {
 
@@ -14,6 +15,7 @@ public class DebrisBelt : MonoBehaviour {
 
     private Vector3 centerPos;
     private int n;
+    private bool isRead = false;
     private List<GameObject> celestialObjects = new List<GameObject>();
 
 
@@ -31,7 +33,6 @@ public class DebrisBelt : MonoBehaviour {
             centerPos = new Vector3(0,0,0);
 	    }
 
-
 	    System.Random rnd = new System.Random(Seed);
 
 	    n = (int) (Radius * Density / (2 * Math.PI));
@@ -48,6 +49,16 @@ public class DebrisBelt : MonoBehaviour {
         }
 
 	}
+
+    public List<GameObject> getDebris()
+    {
+        if (celestialObjects.Count != 0 && !isRead)
+        {
+            isRead = true;
+            return celestialObjects;
+        }
+        return null;
+    }
 
     // Update is called once per frame
 	void Update () {
