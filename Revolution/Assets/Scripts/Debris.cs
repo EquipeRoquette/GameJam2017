@@ -30,6 +30,7 @@ public class Debris : CelestialObject {
 	// Update is called once per frame
 	void Update ()
 	{
+
 	    // Dummy annimation untily external action
 	    if (isFixed)
 	    {
@@ -87,6 +88,6 @@ public class Debris : CelestialObject {
 
         }
 
-        return forceSum*50;
+        return 5*forceSum;
     }
 }

@@ -156,30 +156,14 @@ public class arrowControl : MonoBehaviour {
 	
 	// Update is called once per frame
 
-	void Update () {		 /*
-
-		mouseDiff = getMouseDiff();
-
-		setArrowAngle (mouseDiff);
-
-		distance = getMouseDistance (mouseDiff);
-
-		this.transform.localScale = getArrowScale (distance);
-
-		//arrow.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
-		if (rGM!= null && Input.GetMouseButtonDown (0)) {
-			Debug.Log ("Pressed left click.");
-
-			rGM.launchSatellite (this.transform.position, getMouseDiff().normalized * getPower () * forceFactor);
-		} */
-
+	void Update () {
 
 	}
 
 	Vector2 getMouseDiff() {		
 		Vector3 v3Pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z);
 		v3Pos = Camera.main.ScreenToWorldPoint(v3Pos);
-		v3Pos = v3Pos - this.transform.position;
+		v3Pos = (v3Pos - this.transform.position);
 		return new Vector2(v3Pos.x, v3Pos.y);
 	}
 
