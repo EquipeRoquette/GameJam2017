@@ -19,9 +19,16 @@ public class CelestialObject : MonoBehaviour
 
 	}
 
-    void OnCollisionEnter (Collision col)
-    {
-        Debug.Log("test");
+
+    void OnCollisionEnter2D(Collision2D coll) {
+        // Check if owner is black hole
+        if (tag == "black_hole")
+        {
+            if (coll.gameObject.tag == "satellite")
+            {
+                Destroy(coll.gameObject);
+            }
+        }
     }
 
 
