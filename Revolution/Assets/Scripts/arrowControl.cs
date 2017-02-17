@@ -2,17 +2,20 @@
 using System.Collections;
 
 public class arrowControl : MonoBehaviour {
-	public ReleaseGameManager rGM;
 	public Vector2 mouseDiff;
 	public float arrowAngle = 0F;
 	public float distance = 0F;
 	public float forceFactor = 5.0F;
 	// Use this for initialization
+
+    private GameManager rGM;
+
 	void Start () {
+	    rGM = FindObjectOfType<GameManager>();
 	}
 	
 	// Update is called once per frame
-	void Update () {		
+	void Update () {
 		mouseDiff = getMouseDiff();
 
 		setArrowAngle (mouseDiff);
@@ -22,9 +25,9 @@ public class arrowControl : MonoBehaviour {
 		this.transform.localScale = getArrowScale (distance);
 
 		//arrow.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * smooth);
-		if (Input.GetMouseButtonDown (0)) {
+		if (rGM!= null && Input.GetMouseButtonDown (0)) {
 			Debug.Log ("Pressed left click.");
-			rGM.launchSatellite (this.transform.position, getMouseDiff().normalized * getPower () * forceFactor);
+			rGM.launchSatellite(this.transform.position, getMouseDiff().normalized * getPower () * forceFactor);
 		}
 
 	}

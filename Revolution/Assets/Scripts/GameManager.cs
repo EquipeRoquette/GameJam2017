@@ -48,9 +48,9 @@ public class GameManager : MonoBehaviour
         }
 
 
-        var sat = (GameObject) Instantiate(prefabSatellite, new Vector3(0, 4, 0), Quaternion.identity);
-        celestialObjects.Add(sat.GetComponent<CelestialObject>());
-        celestialObjects[celestialObjects.Count-1].Init(false, new Vector2(-5, -3));
+//        var sat = (GameObject) Instantiate(prefabSatellite, new Vector3(0, 4, 0), Quaternion.identity);
+//        celestialObjects.Add(sat.GetComponent<CelestialObject>());
+//        celestialObjects[celestialObjects.Count-1].Init(false, new Vector2(-5, -3));
 
         Debug.Log("Object Scene" + celestialObjects.Count());
 
@@ -64,6 +64,13 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void launchSatellite(Vector3 position, Vector2 speed){
+
+        var sat = (GameObject) Instantiate(prefabSatellite, position, Quaternion.identity);
+        celestialObjects.Add(sat.GetComponent<CelestialObject>());
+        celestialObjects[celestialObjects.Count-1].Init(false, speed);
     }
 
 

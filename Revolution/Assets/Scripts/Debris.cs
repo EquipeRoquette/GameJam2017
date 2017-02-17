@@ -16,6 +16,17 @@ public class Debris : CelestialObject {
 //
 //	}
 
+    void OnTriggerEnter2D(Collider2D other) {
+        // Check if owner is black hole
+        if (tag == "debris")
+        {
+            if (other.gameObject.tag == "black_hole")
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
 	// Update is called once per frame
 	void Update ()
 	{

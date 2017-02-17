@@ -27,16 +27,6 @@ public class CelestialObject : MonoBehaviour
 
 	}
 
-    void OnTriggerEnter2D(Collider2D other) {
-        // Check if owner is black hole
-        if (tag == "debris")
-        {
-            if (other.gameObject.tag == "black_hole")
-            {
-                Destroy(gameObject);
-            }
-        }
-    }
 
     void OnCollisionEnter2D(Collision2D coll) {
         // Check if owner is black hole
@@ -116,7 +106,7 @@ public class CelestialObject : MonoBehaviour
         foreach (var cel in list_Objects)
         {
             // Check if valid
-            if (cel == null || cel == reference)
+            if (cel == null || cel == reference || cel.gameObject.tag == "debris")
                 continue;
 
             forceSum += GetForceInteraction(reference, cel);
