@@ -24,16 +24,16 @@ public class ReleaseGameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 	    // Update forces
-	    foreach (var go in celestialObjects)
-	    {
-	        if (go == null) continue;
-
-	        var cel = go.GetComponent<CelestialObject>();
-	        if (cel != null && !cel.GetIsFixed())
-	        {
-	            cel.AddForceCelestial(celestialObjects);
-	        }
-	    }
+//	    foreach (var go in celestialObjects)
+//	    {
+//	        if (go == null) continue;
+//
+//	        var cel = go.GetComponent<CelestialObject>();
+//	        if (cel != null && !cel.GetIsFixed())
+//	        {
+//	            cel.AddForceCelestial(celestialObjects);
+//	        }
+//	    }
 
 	}
 

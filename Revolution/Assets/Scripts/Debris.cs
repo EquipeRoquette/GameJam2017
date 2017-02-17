@@ -3,17 +3,18 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BeltAsteroid : CelestialObject {
+public class Debris : CelestialObject {
 
     private Vector2 centerOrbit;
     private float angularSpeed;
     private float radius;
     private float angle;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
+
+//	// Use this for initialization
+//	void Start () {
+//
+//	}
 
 	// Update is called once per frame
 	void Update ()
@@ -38,7 +39,7 @@ public class BeltAsteroid : CelestialObject {
     }
 
 
-    public override void AddForceCelestial(List<GameObject> list_Objects)
+    public override void AddForceCelestial(List<CelestialObject> list_Objects)
     {
 
         var g = getInteractionUser(this, list_Objects);
@@ -54,9 +55,6 @@ public class BeltAsteroid : CelestialObject {
             m_Body.AddForce(g);
         }
 
-//        if (m_Body == null || list_Objects == null || isFixed) return;
-//        var forceSum = GetSumForceInteraction(this, list_Objects);
-//        m_Body.AddForce(forceSum);
 
     }
 
@@ -67,18 +65,15 @@ public class BeltAsteroid : CelestialObject {
         transform.position = new Vector3(x+centerOrbit.x, y+centerOrbit.y, 0);
     }
 
-    static Vector2 getInteractionUser(CelestialObject reference, List<GameObject> list_Objects)
+    static Vector2 getInteractionUser(CelestialObject reference, List<CelestialObject> list_Objects)
     {
         var forceSum = new Vector2(0,0);
-        foreach (var go in list_Objects)
+        foreach (var cel in list_Objects)
         {
-            if (go == null) continue;
+            if (cel == null || cel.tag != "satellite") continue;
 
-            var cel = go.GetComponent<CelestialObject>();
-            if (cel.tag == "satellite")
-            {
-                forceSum += GetForceInteraction(reference, cel);
-            }
+            forceSum += GetForceInteraction(reference, cel);
+
         }
 
         return forceSum*50;
