@@ -11,8 +11,9 @@ public class MainManager : MonoBehaviour {
     public Rigidbody[] m_Suns;
     public Text m_MessageText;
     public Text m_ObjectiveText;
+    public AudioSource m_SwipeSound;
 
-   public static string test = "test";
+    public static string test = "test";
 
     public static int[] Trophies;
 
@@ -26,6 +27,7 @@ public class MainManager : MonoBehaviour {
     private bool m_AxisControl;
     private bool m_ShowMenu;
     private bool m_Paused;
+    
 
    void Awake () {
       AirConsole.instance.onMessage += OnMessage;
@@ -47,11 +49,13 @@ public class MainManager : MonoBehaviour {
                if (degree > 300 || degree < 60) {
                   if (level < m_Suns.Length - 1) {
                      level++;
+                     m_SwipeSound.Play();
                   }
                }
                if (degree > 120 && degree < 240) {
                   if (level > 0) {
                      level--;
+                     m_SwipeSound.Play();
                   }
                }
 
@@ -74,6 +78,7 @@ public class MainManager : MonoBehaviour {
         if (Trophies == null) {
            Trophies = new int[m_Suns.Length];
         }
+        
 	}
 
     void Update()
@@ -124,21 +129,25 @@ public class MainManager : MonoBehaviour {
         {
             m_AxisControl = false;
             level -= 1;
+            m_SwipeSound.Play();
         }
         else if (m_AxisControl && level < m_Suns.Length - 1 && Input.GetAxis("Horizontal") > 0)
         {
             m_AxisControl = false;
             level += 1;
+            m_SwipeSound.Play();
         }
         else if (m_MouseControl && level > 0 && Input.mousePosition.x < Screen.width / 4)
         {
             m_MouseControl = false;
             level -= 1;
+            m_SwipeSound.Play();
         }
         else if (m_MouseControl && level < m_Suns.Length - 1 && Input.mousePosition.x > 3 * Screen.width / 4)
         {
             level += 1;
             m_MouseControl = false;
+            m_SwipeSound.Play();
         }
 
         m_Camera.transform.position = Vector3.SmoothDamp(m_Camera.transform.position, m_Suns[level].transform.position + offset, ref m_MoveVelocity, m_DampTime); ;
