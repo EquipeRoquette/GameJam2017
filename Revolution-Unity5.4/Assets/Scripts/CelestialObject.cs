@@ -10,6 +10,10 @@ public class CelestialObject : MonoBehaviour
     public bool isFixed = true;
     protected Rigidbody2D m_Body;
     protected Vector2 velocityInit;
+    private bool isShrinking = false;
+    private float limitShrink = 1f;
+
+    arrowControl aC;
 
     public CelestialObject()
     {
@@ -20,7 +24,9 @@ public class CelestialObject : MonoBehaviour
     // Use this for initialization
 	void Start () {
 	    m_Body = GetComponent<Rigidbody2D>();
-	    m_Body.velocity = velocityInit;
+       m_Body.velocity = velocityInit;
+       aC = FindObjectOfType<arrowControl> ();
+
 	}
 	
 	void Update () {
@@ -28,7 +34,23 @@ public class CelestialObject : MonoBehaviour
 	    {
 	        transform.Rotate(Vector3.forward, 45 * Time.deltaTime * 0.2f);
 	    }
+
+	    if (isShrinking) {
+	        transform.localScale -= Vector3.one*Time.deltaTime*5f;
+	        if (transform.localScale.x < limitShrink)
+	        {
+	            isShrinking = false;
+	            Destroy(this.gameObject);
+               aC.notifySatelliteDestroyed();
+	        }
+	    }
 	}
+
+    void setShrink(float limitShrink)
+    {
+        this.isShrinking = true;
+        this.limitShrink = transform.localScale.x/limitShrink;
+    }
 
 
     void OnCollisionEnter2D(Collision2D coll) {
@@ -37,7 +59,17 @@ public class CelestialObject : MonoBehaviour
         {
             if (coll.gameObject.tag == "satellite")
             {
-                Destroy(coll.gameObject);
+
+//                Destroy(coll.gameObject);
+                var sat = coll.gameObject.GetComponent<CelestialObject>();
+
+                if (sat != null && !sat.isShrinking)
+                {
+                    AudioSource audio = GetComponent<AudioSource>();
+                    audio.Play();
+                    sat.setShrink(4);
+                }
+
             } else if (coll.gameObject.tag == "debris")
             {
                 Destroy(coll.gameObject);

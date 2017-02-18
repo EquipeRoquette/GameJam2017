@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Yarn : MonoBehaviour
 {
-   GameManager rGM;
+    GameManager rGM;
 
     public bool isOrbiting = false;
     public float angularSpeed = 0.01f;
@@ -16,6 +16,7 @@ public class Yarn : MonoBehaviour
 	// Use this for initialization
 	void Start () {
 
+       rGM = FindObjectOfType<GameManager>();
 	    if (transform.parent != null)
 	    {
 	        centerPos = transform.parent.position;
@@ -30,7 +31,6 @@ public class Yarn : MonoBehaviour
 	    if ((transform.position-centerPos).y < 0)
 	        angle = -angle;
 
-      rGM = FindObjectOfType<GameManager> ();
 
 	}
 	
@@ -47,16 +47,23 @@ public class Yarn : MonoBehaviour
 	}
 
     void OnTriggerEnter2D(Collider2D other) {
-      rGM.notifyYarnTaken ();
         // Check if owner is black hole
-        Destroy(gameObject);
+        if (other.gameObject.tag != "debris" && other.gameObject.tag != "satellite") return;
 
-        if (other.gameObject.tag == "debris")
-        {
-            Destroy(other.gameObject);
+        //Destroy(gameObject);
+        if (other.tag == "satellite") {
+            rGM.notifyYarnTaken ();
+            this.transform.parent = other.transform;
+            CircleCollider2D bc2d = this.GetComponent<CircleCollider2D> ();
+            bc2d.enabled = false;
         }
 
-         
+        if (other.gameObject.tag == "debris")
+         {
+            rGM.notifyYarnTaken ();
+            Destroy(other.gameObject);
+            Destroy(this);
+        }
     }
 
     public void updatePosition()
