@@ -3,6 +3,7 @@ using System.Collections;
 using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class arrowControl : MonoBehaviour {
 	public Vector2 mouseDiff;
@@ -14,6 +15,7 @@ public class arrowControl : MonoBehaviour {
    public bool down = false;
    public bool up_airconsole = false;
    public bool down_airconsole = false;
+    public Slider m_AimSlider;
 
    public Vector2 velocity;
    public Vector3 rotations;
@@ -24,7 +26,7 @@ public class arrowControl : MonoBehaviour {
    bool canShoot = true;
 
 
-   AudioSource boing;
+   public AudioSource boing;
 
     private float maxLaunchForce;
     private float currentLaunchForce;
@@ -41,11 +43,12 @@ public class arrowControl : MonoBehaviour {
       AirConsole.instance.onDisconnect += OnDisconnect;
 
         maxLaunchForce = 2000;
-        minLaunchForce = 100;
+        minLaunchForce = 50;
         currentLaunchForce = minLaunchForce;
         m_Fired = false;
         maxChargeTime = 1f;
-        chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime; ;
+        chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime;
+        m_AimSlider.value = minLaunchForce;
 
 }
 
@@ -201,7 +204,7 @@ public class arrowControl : MonoBehaviour {
         up = Input.GetAxis("Vertical") > 0;
         down = Input.GetAxis("Vertical") < 0;
 
-
+        m_AimSlider.value = minLaunchForce;
       if (canShoot) {
          if (currentLaunchForce >= maxLaunchForce && !m_Fired) {
             currentLaunchForce = maxLaunchForce;
@@ -212,7 +215,7 @@ public class arrowControl : MonoBehaviour {
             currentLaunchForce = minLaunchForce;
          } else if (Input.GetButton ("Fire1") && !m_Fired) {
             currentLaunchForce += chargeSpeed * Time.deltaTime;
-            // m_AimSlider.value = currentLaunchForce;
+            m_AimSlider.value = currentLaunchForce;
          } else if (Input.GetButtonUp ("Fire1") && !m_Fired) {
             LaunchRocket (currentLaunchForce);
          }
