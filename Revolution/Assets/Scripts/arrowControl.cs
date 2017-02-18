@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using NDream.AirConsole;
-using Newtonsoft.Json.Linq;
+//using NDream.AirConsole;
+//using Newtonsoft.Json.Linq;
 
 public class arrowControl : MonoBehaviour {
 	public Vector2 mouseDiff;
@@ -21,9 +21,9 @@ public class arrowControl : MonoBehaviour {
    //Quaternion targetAngle;
 
    void Awake () {
-      AirConsole.instance.onMessage += OnMessage;
-      AirConsole.instance.onConnect += OnConnect;
-      AirConsole.instance.onDisconnect += OnDisconnect;
+//      AirConsole.instance.onMessage += OnMessage;
+//      AirConsole.instance.onConnect += OnConnect;
+//      AirConsole.instance.onDisconnect += OnDisconnect;
    }
 
    /// <summary>
@@ -36,11 +36,11 @@ public class arrowControl : MonoBehaviour {
    /// </summary>
    /// <param name="device_id">The device_id that connected</param>
    void OnConnect (int device_id) {
-      if (AirConsole.instance.GetActivePlayerDeviceIds.Count == 0) {
-         if (AirConsole.instance.GetControllerDeviceIds ().Count >= 1) {
-            StartGame ();
-         } 
-      }
+//      if (AirConsole.instance.GetActivePlayerDeviceIds.Count == 0) {
+//         if (AirConsole.instance.GetControllerDeviceIds ().Count >= 1) {
+//            StartGame ();
+//         }
+//      }
    }
 
    /// <summary>
@@ -48,12 +48,12 @@ public class arrowControl : MonoBehaviour {
    /// </summary>
    /// <param name="device_id">The device_id that has left.</param>
    void OnDisconnect (int device_id) {
-      int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber (device_id);
-      if (active_player != -1) {
-         if (AirConsole.instance.GetControllerDeviceIds ().Count >= 1) {
-            StartGame ();
-         } 
-      }
+//      int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber (device_id);
+//      if (active_player != -1) {
+//         if (AirConsole.instance.GetControllerDeviceIds ().Count >= 1) {
+//            StartGame ();
+//         }
+//      }
    }
 
    /// <summary>
@@ -61,7 +61,7 @@ public class arrowControl : MonoBehaviour {
    /// </summary>
    /// <param name="from">From.</param>
    /// <param name="data">Data.</param>
-   void OnMessage (int device_id, JToken data) {
+//   void OnMessage (int device_id, JToken data) {
       /*
       int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber (device_id);
       if (active_player != -1) {
@@ -90,47 +90,47 @@ public class arrowControl : MonoBehaviour {
          }
       }
       */
-      Debug.Log (data);
-      JToken up_message = data ["up"];
-      if (up_message != null) {
-         JToken pressed = up_message ["pressed"];
-         if (pressed != null) {
-            up = (bool)pressed;
-         }
-      }
-      JToken down_message = data ["down"];
-      if (down_message != null) {
-         JToken pressed = down_message ["pressed"];
-         if (pressed != null) {
-            down = (bool)pressed;
-         }
-      }
-      JToken swipe = data ["swipeanalog-right"];
-      if (swipe != null) {
-         JToken message = swipe ["message"];
-         if (message != null) {
-            if (message ["speed"] != null) {
-               rotations = this.transform.rotation.eulerAngles;
-               rotation = rotations.z;
-               velocity = new Vector2 (Mathf.Cos (rotation*Mathf.Deg2Rad), Mathf.Sin (rotation*Mathf.Deg2Rad)).normalized;
-               rGM.launchSatellite (this.transform.position, velocity * (float) message["speed"] * forceFactor);
-            }
-         }
-      }
-
-     // this.transform.Rotate (Vector3.forward * (float)data ["move"]);
-   }
+//      Debug.Log (data);
+//      JToken up_message = data ["up"];
+//      if (up_message != null) {
+//         JToken pressed = up_message ["pressed"];
+//         if (pressed != null) {
+//            up = (bool)pressed;
+//         }
+//      }
+//      JToken down_message = data ["down"];
+//      if (down_message != null) {
+//         JToken pressed = down_message ["pressed"];
+//         if (pressed != null) {
+//            down = (bool)pressed;
+//         }
+//      }
+//      JToken swipe = data ["swipeanalog-right"];
+//      if (swipe != null) {
+//         JToken message = swipe ["message"];
+//         if (message != null) {
+//            if (message ["speed"] != null) {
+//               rotations = this.transform.rotation.eulerAngles;
+//               rotation = rotations.z;
+//               velocity = new Vector2 (Mathf.Cos (rotation*Mathf.Deg2Rad), Mathf.Sin (rotation*Mathf.Deg2Rad)).normalized;
+//               rGM.launchSatellite (this.transform.position, velocity * (float) message["speed"] * forceFactor);
+//            }
+//         }
+//      }
+//
+//     // this.transform.Rotate (Vector3.forward * (float)data ["move"]);
+//   }
       
    void OnDestroy () {
 
-      // unregister airconsole events on scene change
-      if (AirConsole.instance != null) {
-         AirConsole.instance.onMessage -= OnMessage;
-      }
+//      // unregister airconsole events on scene change
+//      if (AirConsole.instance != null) {
+//         AirConsole.instance.onMessage -= OnMessage;
+//      }
    }
 
    void StartGame () {
-      AirConsole.instance.SetActivePlayers (1);
+//      AirConsole.instance.SetActivePlayers (1);
 
    }
 
