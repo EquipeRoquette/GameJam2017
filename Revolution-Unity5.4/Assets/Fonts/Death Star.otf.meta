@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 58ca4e906f6678a40a02e7cc3fb76137
+timeCreated: 1487302014
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Death Star
+  fontNames:
+  - Death Star
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
