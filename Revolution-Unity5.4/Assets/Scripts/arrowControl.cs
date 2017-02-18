@@ -12,6 +12,8 @@ public class arrowControl : MonoBehaviour {
 
    public bool up = false;
    public bool down = false;
+   public bool up_airconsole = false;
+   public bool down_airconsole = false;
 
    public Vector2 velocity;
    public Vector3 rotations;
@@ -111,7 +113,7 @@ public class arrowControl : MonoBehaviour {
          }
       }
       */
-      Debug.Log (data);
+     // Debug.Log (data);
       JToken menu = data ["Menu"];
       if (menu != null) {
          SceneManager.LoadScene ("MainMenu");
@@ -126,18 +128,17 @@ public class arrowControl : MonoBehaviour {
       if (up_message != null) {
          JToken pressed = up_message ["pressed"];
          if (pressed != null) {
-            up = (bool)pressed;
+            up_airconsole = (bool)pressed;
+            Debug.Log ("UPPPPPPP");
          }
       }
       JToken down_message = data ["down"];
       if (down_message != null) {
          JToken pressed = down_message ["pressed"];
          if (pressed != null) {
-            down = (bool)pressed;
+            down_airconsole = (bool)pressed;
          }
       }
-
-
 
       if (canShoot) {
          JToken swipe = data ["swipeanalog-right"];
@@ -185,11 +186,11 @@ public class arrowControl : MonoBehaviour {
 	}
 
    void FixedUpdate() {
-      if (up && (this.transform.rotation.eulerAngles.z < 60 || this.transform.rotation.eulerAngles.z > 290)) {
+      if ((up || up_airconsole) && (this.transform.rotation.eulerAngles.z < 60 || this.transform.rotation.eulerAngles.z > 290)) {
          this.transform.Rotate (Vector3.forward * speed * Time.fixedDeltaTime);
       }
 
-      if (down && (this.transform.rotation.eulerAngles.z > 300 || this.transform.rotation.eulerAngles.z < 70)) {
+      if ((down || down_airconsole) && (this.transform.rotation.eulerAngles.z > 300 || this.transform.rotation.eulerAngles.z < 70)) {
          this.transform.Rotate (Vector3.back * speed * Time.fixedDeltaTime);
       }
    }
@@ -200,26 +201,22 @@ public class arrowControl : MonoBehaviour {
         up = Input.GetAxis("Vertical") > 0;
         down = Input.GetAxis("Vertical") < 0;
 
-        if (currentLaunchForce >= maxLaunchForce && !m_Fired)
-        {
+
+      if (canShoot) {
+         if (currentLaunchForce >= maxLaunchForce && !m_Fired) {
             currentLaunchForce = maxLaunchForce;
             
-            LaunchRocket(currentLaunchForce);
-        }
-        else if (Input.GetButtonDown("Fire1"))
-        {
+            LaunchRocket (currentLaunchForce);
+         } else if (Input.GetButtonDown ("Fire1")) {
             m_Fired = false;
             currentLaunchForce = minLaunchForce;
-        }
-        else if (Input.GetButton("Fire1") && !m_Fired)
-        {
+         } else if (Input.GetButton ("Fire1") && !m_Fired) {
             currentLaunchForce += chargeSpeed * Time.deltaTime;
-           // m_AimSlider.value = currentLaunchForce;
-        }
-        else if (Input.GetButtonUp("Fire1") && !m_Fired)
-        {
-            LaunchRocket(currentLaunchForce);
-        }
+            // m_AimSlider.value = currentLaunchForce;
+         } else if (Input.GetButtonUp ("Fire1") && !m_Fired) {
+            LaunchRocket (currentLaunchForce);
+         }
+       }
     }
 
 	Vector2 getMouseDiff() {		
@@ -259,7 +256,7 @@ public class arrowControl : MonoBehaviour {
     void LaunchRocket(float speed)
    {    
         boing.Play ();
-        canShoot = false;
+        //canShoot = false;
         m_Fired = true;
         rotations = this.transform.rotation.eulerAngles;
         rotation = rotations.z;
@@ -267,4 +264,8 @@ public class arrowControl : MonoBehaviour {
         rGM.launchSatellite(this.transform.position, velocity * speed * forceFactor);
     }
     
+
+   public void notifySatelliteDestroyed() {
+      shotEnabled ();
+   }
 }

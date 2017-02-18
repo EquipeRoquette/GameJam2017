@@ -2,7 +2,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using UnityEditor;
 
 public class DebrisBelt : MonoBehaviour {
 
@@ -23,6 +25,9 @@ public class DebrisBelt : MonoBehaviour {
 	void Start ()
 	{
 
+	    Sprite[] sprites = AssetDatabase.LoadAllAssetRepresentationsAtPath( "Assets/Sprites/asteroides.png" )
+	        .OfType<Sprite>().ToArray();
+
 //	    var test = GetComponentInParent<GameObject>();
 	    if (transform.parent != null)
 	    {
@@ -41,11 +46,15 @@ public class DebrisBelt : MonoBehaviour {
         {
             var theta = (float) (2*Math.PI*rnd.NextDouble());
             var radiusDelta = (float) (RadiusWidth*rnd.NextDouble()) - RadiusWidth/2;
+            var angularSpeedOwn = (float) (2*rnd.NextDouble()) - 1f;
+
             var center = new Vector2(centerPos.x, centerPos.y);
+            var id_ast = rnd.Next(0, sprites.Count());
 
             celestialObjects.Add((GameObject) Instantiate(prefabDebris,
                 new Vector3(0, 0, 0), Quaternion.identity));
-            celestialObjects[celestialObjects.Count-1].GetComponent<Debris>().Init(true, 0.01f, Radius+radiusDelta, theta, center);
+            celestialObjects[celestialObjects.Count-1].GetComponent<Debris>().Init(true, 0.01f, angularSpeedOwn,
+                Radius+radiusDelta, theta, center, sprites[id_ast]);
         }
 
 	}
