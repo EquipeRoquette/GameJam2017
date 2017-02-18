@@ -12,10 +12,13 @@ public class GameManager : MonoBehaviour
 
     private readonly List<CelestialObject> celestialObjects = new List<CelestialObject>();
 
+    arrowControl aC;
+
     // Use this for initialization
 	void Start () {
 	    StartCoroutine(GameLoop());
-       
+
+       aC = FindObjectOfType<arrowControl>();
        endManager = FindObjectOfType<EndOfLevel>();
 	}
 
@@ -88,7 +91,6 @@ public class GameManager : MonoBehaviour
     }
 
     public void launchSatellite(Vector3 position, Vector2 speed){
-
         var sat = (GameObject) Instantiate(prefabSatellite, position, Quaternion.identity);
         celestialObjects.Add(sat.GetComponent<CelestialObject>());
         celestialObjects[celestialObjects.Count-1].Init(false, speed);
