@@ -46,6 +46,8 @@ public class Yarn : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
         // Check if owner is black hole
+        if (other.gameObject.tag != "debris" && other.gameObject.tag != "satellite") return;
+
         Destroy(gameObject);
 
         if (other.gameObject.tag == "debris")

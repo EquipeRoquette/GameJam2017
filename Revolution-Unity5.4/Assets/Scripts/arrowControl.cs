@@ -24,7 +24,12 @@ public class arrowControl : MonoBehaviour {
 
    AudioSource boing;
 
-
+    private float maxLaunchForce;
+    private float currentLaunchForce;
+    private float minLaunchForce;
+    private bool m_Fired;
+    private float chargeSpeed;
+    private float maxChargeTime;
 
    //Quaternion targetAngle;
 
@@ -32,7 +37,15 @@ public class arrowControl : MonoBehaviour {
       AirConsole.instance.onMessage += OnMessage;
       AirConsole.instance.onConnect += OnConnect;
       AirConsole.instance.onDisconnect += OnDisconnect;
-   }
+
+        maxLaunchForce = 2000;
+        minLaunchForce = 100;
+        currentLaunchForce = minLaunchForce;
+        m_Fired = false;
+        maxChargeTime = 1f;
+        chargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime; ;
+
+}
 
    /// <summary>
    /// We start the game if 2 players are connected and the game is not already running (activePlayers == null).
@@ -124,18 +137,15 @@ public class arrowControl : MonoBehaviour {
          }
       }
 
+
+
       if (canShoot) {
          JToken swipe = data ["swipeanalog-right"];
          if (swipe != null) {
             JToken message = swipe ["message"];
             if (message != null) {
                if (message ["speed"] != null) {
-                  rotations = this.transform.rotation.eulerAngles;
-                  rotation = rotations.z;
-                  velocity = new Vector2 (Mathf.Cos (rotation * Mathf.Deg2Rad), Mathf.Sin (rotation * Mathf.Deg2Rad)).normalized;
-                  rGM.launchSatellite (this.transform.position, velocity * (float)message ["speed"] * forceFactor);
-                  boing.Play ();
-                  canShoot = false;
+                  LaunchRocket((float)message["speed"]);              
                }
             }
          }
@@ -186,9 +196,31 @@ public class arrowControl : MonoBehaviour {
 	
 	// Update is called once per frame
 
-	void Update () {
+	void Update () {        
+        up = Input.GetAxis("Vertical") > 0;
+        down = Input.GetAxis("Vertical") < 0;
 
-	}
+        if (currentLaunchForce >= maxLaunchForce && !m_Fired)
+        {
+            currentLaunchForce = maxLaunchForce;
+            
+            LaunchRocket(currentLaunchForce);
+        }
+        else if (Input.GetButtonDown("Fire1"))
+        {
+            m_Fired = false;
+            currentLaunchForce = minLaunchForce;
+        }
+        else if (Input.GetButton("Fire1") && !m_Fired)
+        {
+            currentLaunchForce += chargeSpeed * Time.deltaTime;
+           // m_AimSlider.value = currentLaunchForce;
+        }
+        else if (Input.GetButtonUp("Fire1") && !m_Fired)
+        {
+            LaunchRocket(currentLaunchForce);
+        }
+    }
 
 	Vector2 getMouseDiff() {		
 		Vector3 v3Pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z);
@@ -223,4 +255,16 @@ public class arrowControl : MonoBehaviour {
 		distance = Mathf.Pow (distance, 1F/4F);
 		return distance;
 	}
+
+    void LaunchRocket(float speed)
+   {    
+        boing.Play ();
+        canShoot = false;
+        m_Fired = true;
+        rotations = this.transform.rotation.eulerAngles;
+        rotation = rotations.z;
+        velocity = new Vector2(Mathf.Cos(rotation * Mathf.Deg2Rad), Mathf.Sin(rotation * Mathf.Deg2Rad)).normalized;
+        rGM.launchSatellite(this.transform.position, velocity * speed * forceFactor);
+    }
+    
 }

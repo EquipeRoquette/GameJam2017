@@ -26,7 +26,6 @@ public class MainManager : MonoBehaviour {
     private bool m_AxisControl;
     private bool m_ShowMenu;
     private bool m_Paused;
-    private int[] m_NbPelottes;
 
    void Awake () {
       AirConsole.instance.onMessage += OnMessage;
@@ -72,13 +71,8 @@ public class MainManager : MonoBehaviour {
         m_AxisControl = false;
         m_ShowMenu = false;
         m_Paused = false;
-        m_NbPelottes = new int[m_Suns.Length];
         if (Trophies == null) {
            Trophies = new int[m_Suns.Length];
-        }
-        for (int i = 0; i < m_Suns.Length; i++)
-        {
-            m_NbPelottes[i]=0;
         }
 	}
 
@@ -103,8 +97,23 @@ public class MainManager : MonoBehaviour {
         if(!m_Paused)
             CameraUpdate();
 
-        m_MessageText.text = "Level " + (level + 1);
-      m_ObjectiveText.text = "Pelottes Pattrapées: " + Trophies[level] + "/3";       
+        TextUpdate();
+            
+    }
+
+    private void TextUpdate()
+    {
+        if(level == 0)
+        {
+            m_MessageText.text = "Tutorial";
+        }
+        else
+        {
+            m_MessageText.text = "Level " + (level);
+        }
+        
+        
+        m_ObjectiveText.text = "Pelottes Pattrapées: " + Trophies[level] + "/3"; 
     }
 
     private void CameraUpdate()
