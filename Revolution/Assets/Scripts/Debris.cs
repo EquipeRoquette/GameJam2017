@@ -2,14 +2,19 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 
 public class Debris : CelestialObject {
 
     private Vector2 centerOrbit;
     private float angularSpeed;
+    private float angularSpeedOwn;
+
     private float radius;
     private float angle;
 
+    public Texture2D texture;
 
 //	// Use this for initialization
 //	void Start () {
@@ -37,17 +42,23 @@ public class Debris : CelestialObject {
 	        angle += angularSpeed;
 	        updatePosition();
 	    }
+
+	    transform.Rotate(Vector3.forward, 45 * Time.deltaTime * angularSpeedOwn);
+
 	}
 
-    public void Init(bool isFixed, float angularSpeed, float radius, float angle, Vector2 centerOrbit)
+    public void Init(bool isFixed, float angularSpeed, float angularSpeedOwn,
+        float radius, float angle, Vector2 centerOrbit, Sprite sp)
     {
         base.Init(isFixed, new Vector2(0,0));
         this.angularSpeed = angularSpeed;
+        this.angularSpeedOwn = angularSpeedOwn;
         this.radius = radius;
         this.angle = angle;
         this.centerOrbit = centerOrbit;
 
         updatePosition();
+        GetComponent<SpriteRenderer>().sprite = sp;
     }
 
 
