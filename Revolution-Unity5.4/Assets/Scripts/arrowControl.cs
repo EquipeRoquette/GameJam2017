@@ -19,6 +19,8 @@ public class arrowControl : MonoBehaviour {
 
    public float speed = 20;
 
+   bool canShoot = true;
+
 
    AudioSource boing;
 
@@ -134,12 +136,17 @@ public class arrowControl : MonoBehaviour {
             down = (bool)pressed;
          }
       }
-      JToken swipe = data ["swipeanalog-right"];
-      if (swipe != null) {
-         JToken message = swipe ["message"];
-         if (message != null) {
-            if (message ["speed"] != null) {
-               LaunchRocket((float)message["speed"]);
+
+
+
+      if (canShoot) {
+         JToken swipe = data ["swipeanalog-right"];
+         if (swipe != null) {
+            JToken message = swipe ["message"];
+            if (message != null) {
+               if (message ["speed"] != null) {
+                  LaunchRocket((float)message["speed"]);              
+               }
             }
          }
       }
@@ -159,6 +166,10 @@ public class arrowControl : MonoBehaviour {
       AirConsole.instance.SetActivePlayers (1);
 
    }
+      
+   public void shotEnabled(){
+      canShoot = true;
+   }
 
 	// Use this for initialization
 
@@ -170,6 +181,7 @@ public class arrowControl : MonoBehaviour {
 
       rGM = FindObjectOfType<GameManager>();
       eOL = FindObjectOfType<EndOfLevel>();
+      boing = GetComponent<AudioSource> ();
 	}
 
    void FixedUpdate() {
@@ -245,7 +257,9 @@ public class arrowControl : MonoBehaviour {
 	}
 
     void LaunchRocket(float speed)
-    {
+   {    
+        boing.Play ();
+        canShoot = false;
         m_Fired = true;
         rotations = this.transform.rotation.eulerAngles;
         rotation = rotations.z;
