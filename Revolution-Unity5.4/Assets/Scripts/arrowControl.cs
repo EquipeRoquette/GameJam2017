@@ -19,8 +19,12 @@ public class arrowControl : MonoBehaviour {
 
    public float speed = 20;
 
+   bool canShoot = true;
+
 
    AudioSource boing;
+
+
 
    //Quaternion targetAngle;
 
@@ -119,16 +123,20 @@ public class arrowControl : MonoBehaviour {
             down = (bool)pressed;
          }
       }
-      JToken swipe = data ["swipeanalog-right"];
-      if (swipe != null) {
-         JToken message = swipe ["message"];
-         if (message != null) {
-            if (message ["speed"] != null) {
-               rotations = this.transform.rotation.eulerAngles;
-               rotation = rotations.z;
-               velocity = new Vector2 (Mathf.Cos (rotation*Mathf.Deg2Rad), Mathf.Sin (rotation*Mathf.Deg2Rad)).normalized;
-               rGM.launchSatellite (this.transform.position, velocity * (float) message["speed"] * forceFactor);
 
+      if (canShoot) {
+         JToken swipe = data ["swipeanalog-right"];
+         if (swipe != null) {
+            JToken message = swipe ["message"];
+            if (message != null) {
+               if (message ["speed"] != null) {
+                  rotations = this.transform.rotation.eulerAngles;
+                  rotation = rotations.z;
+                  velocity = new Vector2 (Mathf.Cos (rotation * Mathf.Deg2Rad), Mathf.Sin (rotation * Mathf.Deg2Rad)).normalized;
+                  rGM.launchSatellite (this.transform.position, velocity * (float)message ["speed"] * forceFactor);
+                  boing.Play ();
+                  canShoot = false;
+               }
             }
          }
       }
@@ -148,6 +156,10 @@ public class arrowControl : MonoBehaviour {
       AirConsole.instance.SetActivePlayers (1);
 
    }
+      
+   public void shotEnabled(){
+      canShoot = true;
+   }
 
 	// Use this for initialization
 
@@ -159,6 +171,7 @@ public class arrowControl : MonoBehaviour {
 
       rGM = FindObjectOfType<GameManager>();
       eOL = FindObjectOfType<EndOfLevel>();
+      boing = GetComponent<AudioSource> ();
 	}
 
    void FixedUpdate() {
